@@ -1,0 +1,142 @@
+#------------------ General system descriptors --------------#
+SystemName        MoSSe
+SystemLabel       MoSSe
+
+NumberOfSpecies   3
+NumberOfAtoms     3
+
+%block ChemicalSpeciesLabel
+	1	42	Mo
+	2	16	S
+	3	34	Se
+%endblock ChemicalSpeciesLabel
+
+LatticeConstant        1.0 Ang
+%block LatticeVectors
+	3.248500	0.000000	0.000000
+	-1.62420	2.813300	0.000000
+	0.000000	0.000000	23.97040
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat  Ang
+
+%block AtomicCoordinatesAndAtomicSpecies
+	-0.00000	1.875520	11.92616	1
+	1.624240	0.937760	10.39769	2
+	1.624240	0.937760	13.63174	3
+%endblock AtomicCoordinatesAndAtomicSpecies
+#------------------------------------------------------------#
+
+#-----------------------opt parameters------------------------#
+#Memory 
+#Diag.Memory                2.0    #1.0
+
+#Pseudopotentials
+#Basis setting
+PAO.BasisType            split
+PAO.BasisSize            DZP         #SZ DZ SZP DZP
+PAO.SplitNorm            0.15   
+PAO.EnergyShift          110 meV     #0.02 Ry - [100,200] meV  
+ElectronicTemperatur     300 K 
+
+#Structural Relaxation 
+MD.TypeOfRun             cg
+MD.MaxCGDispl            0.01 Ang   #0.2 Bohr
+MD.VariableCell          T
+MD.PreconditionVariableCell     5.0 Ang
+
+#Self-Consistent loop
+XC.function              GGA   #LDA
+XC.author           	 PBE   #PZ
+SolutionMethod    	 diagon
+OccupationFunction  	 FD
+spinPolarized		 T
+SingleExction            T
+
+
+#standard output
+WriteCoorInitial         T
+WriteCoorStep            T           
+WriteForce               T           
+WriteKpoint              T           
+
+#optical output
+WriteDM                  T
+WriteCoorXmol            T
+#WriteMDhistory                        F            # .false.
+#WriteCoorCerius                      T              # .false.
+#WriteMDXmol                           T              # .false.
+#WriteDM.NetCDF          T             # .ture.
+#SaveHS                  T            # .false.
+#%block ProjectedDensityOfStates
+#-20.00 10.00 0.200 500 eV
+#%endblock ProjectedDensityOfStates
+#%block LocalDensityOfStates
+#-3.50 0.00 eV
+#%endblock LocalDensityOfStates
+#COOP.Write              T           # .false.
+#SaveRho                 T            # .false.
+#SaveDeltaRho            T            # .false.
+#SaveElectrostaticPotential    T      # .false.
+#SaveNeutralAtomPotential      T      # .false.
+#SaveTotalPotential            T      # .false.
+#SaveIonicCharge               T      # .false.
+#SaveTotalCharge               T      # .false.
+#WriteDenchar                  T      # .false.
+
+#NectCDF
+#WriteDM.NetCDF                T
+#WriteDMHS.NetCDF              T
+#Use.New.Diagk                 T
+
+# Restart
+#DM.UseSaveDM                          T              # .false.
+#MD.UseSaveXV                          T              # .false.
+#MD.UseSaveCG                          T              # .false.
+
+#kgrid_cutoff              [6,1,1,1]    # 0.0 Bohr
+#%block GridCellSampling
+#0.5 0.5 0.0
+#0.5 0.0 0.5
+#0.0 0.5 0.5
+#%endblock GridCellSampling
+#FilterCutoff             200 Ry             
+# it should be similar or lower than the meshcuoff to avoid
+# the eggbox effect on the atomic forces.
+#----------------------------------------------------------------#
+
+#------------------ Some Important parameters--------------------#
+DM.MixingWeight             0.04    
+DM.NumberPulay              4    
+MeshCutoff                  600 Ry
+%block kgrid_Monkhorst_Pack
+1 0 0 0.0
+0 1 0 0.0
+0 0 1 0.0
+%endblock kgrid_Monkhorst_Pack
+#----------------------------------------------------------------#
+
+#----------------------Band structure ---------------------------#
+BandLinesScale    pi/a
+%block BandLines
+1   0.00       0.00      0.00   \Gamma
+51  0.50       0.00      0.00   M
+51  0.333333   0.333333  0.00   K
+51  0.00       0.00      0.00   \Gamma
+%endblock BandLines
+#----------------------------------------------------------------#
+
+#------------------Control Iteration Parameters------------------#
+MaxSCFIterations              60            
+DM.Tolerance                  1.d-4         
+MD.NumCGsteps                 40           
+MD.MaxForceTol                0.02 ev/Ang          
+
+SCFMustConverge               .false.
+DM.Energy.Tolerance           1.d-3 eV
+DM.Require.Energy.Convergence   T
+DM.Harris.Tolerance           1.d-4 eV
+DM.Require.Harris.Convergence   T
+MD.TargetPressure             0.0 GPa
+MD.MaxStressTol               1.0 GPa
+#----------------------------------------------------------------#

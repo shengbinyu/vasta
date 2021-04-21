@@ -105,8 +105,8 @@ def write_fdf(atoms):
         VASP structure file POSCAR
     """
 
-    elements_list = ['H','C','N','O','F','S','Cl','Cr','Se','Br','Mo','Te','I','W']
-    elements_number = ['1','6','7','8','9','16','17','24','34','35','42','52','53','74']
+    elements_list = ['H','C','N','O','F','S','Se','Mo']
+    elements_number = ['1','6','7','8','9','16','34','42']
     species = atoms.elements
     species_numbers = []
     for i in range(len(species)):
@@ -116,17 +116,15 @@ def write_fdf(atoms):
     numbers = atoms.numbers
     positions = atoms.positions
     lattice_constant = atoms.cell_norm()
-    lattice_angle    = atoms.vecangle
-    lattice_cell = atoms.cell
+    lattice_angle    = atoms.cell_angle()
     lattice = np.hstack((lattice_constant,lattice_angle))
     total_numbers = numbers.sum()
     species_counts = len(numbers)
-    filename=atoms.symbols+'.fdf'
 
-    file = open(filename,'w')
+    file = open('temp.fdf','w')
     file.write('#------------------ General system descriptors --------------#\n')
-    file.write('SystemName        '+atoms.symbols+'\n')
-    file.write('SystemLabel       '+atoms.symbols+'\n')
+    file.write('SystemName        '+atoms.symbols[0]+'\n')
+    file.write('SystemLabel       '+atoms.symbols[0]+'\n')
     file.write('\n')
     file.write('NumberOfSpecies   '+str(species_counts)+'\n')
     file.write('NumberOfAtoms     '+str(total_numbers)+'\n')
@@ -135,20 +133,13 @@ def write_fdf(atoms):
     for i in range(len(species)):
         file.write('\t'+str(i+1)+'\t'+str(species_numbers[i])+'\t'+species[i]+'\n')
     file.write('%endblock ChemicalSpeciesLabel\n')
-
     file.write('\n')
     file.write('LatticeConstant        1.0 Ang\n')
-    # file.write('%block LatticeParameters\n')
-    # for i in range(6):
-    #     file.write('\t'+str(round(lattice[i],4)))
-    # file.write('\n')
-    # file.write('%endblock LatticeParameters\n')
-    file.write('%block LatticeVectors\n')
-    for i in range(3):
-        for j in range(3):
-            file.write('\t'+str(round(lattice_cell[i,j],4)).ljust(8,"0"))
-        file.write('\n')
-    file.write('%endblock LatticeVectors\n')
+    file.write('%block LatticeParameters\n')
+    for i in range(6):
+        file.write('\t'+str(round(lattice[i],3)))
+    file.write('\n')
+    file.write('%endblock LatticeParameters\n')
     file.write('\n')
     file.write('AtomicCoordinatesFormat  Ang\n')
     file.write('\n')
@@ -162,18 +153,10 @@ def write_fdf(atoms):
         for j in range(numbers[i]):
             numindex = index + j
             for k in range(3):
-                file.write('\t'+str(round(positions[numindex,k],5)).ljust(8,"0"))
+                file.write('\t'+str(round(positions[numindex,k],3)))
             file.write('\t'+str(i+1)+'\n')
     file.write('%endblock AtomicCoordinatesAndAtomicSpecies\n')
     file.write('#------------------------------------------------------------#\n')
     file.write('\n')
+    os.popen('cat my.fdf>>temp.fdf')
     file.close()
-
-    # os.popen('cat my.fdf>>temp.fdf')
-    # open both files, copy content from my.fdf file to temp.fdf file
-    with open('my.fdf', 'r') as firstfile, open(filename, 'a') as secondfile:
-        # read content from first file
-        for line in firstfile:
-            # append content to second file
-            secondfile.write(line)
-    secondfile.close()

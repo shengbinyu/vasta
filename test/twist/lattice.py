@@ -121,9 +121,9 @@ class Lattice(object):
         a1 = vector(cell[0, 0], cell[0, 1], cell[0, 2])
         a2 = vector(cell[1, 0], cell[1, 1], cell[1, 2])
         a3 = vector(cell[2, 0], cell[2, 1], cell[2, 2])
-        alpha = vector.vec_angle(a2,a3)
-        beta  = vector.vec_angle(a1,a3)
-        gamma = vector.vec_angle(a1,a2)
+        alpha = vector.vec_angle(a1,a2)
+        beta  = vector.vec_angle(a2,a3)
+        gamma = vector.vec_angle(a1,a3)
         angle = np.array([alpha,beta,gamma],dtype='float')
         return angle
 

@@ -135,7 +135,7 @@ class System(object):
         elements = self.elements
         totatmos  = self.totatoms
         atom_index = self.atomindex
-        # vec_angle = self.lattice.vecangle[2]
+        # vec_angle = self.lattice.vecangle[0]
         vec_org = self.lattice.cell
         m,n = vec_index
         T0 = np.zeros(3,dtype='float')
