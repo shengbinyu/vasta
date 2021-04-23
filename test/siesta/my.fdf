@@ -21,7 +21,7 @@ XC.function              GGA   #LDA
 XC.author           	 PBE   #PZ
 SolutionMethod    	 diagon
 OccupationFunction  	 FD
-spinPolarized		 T
+Spin		             non-polarized
 SingleExction            T
 
 
@@ -81,33 +81,33 @@ DM.MixingWeight             0.04
 DM.NumberPulay              4    
 MeshCutoff                  600 Ry
 %block kgrid_Monkhorst_Pack
-1 0 0 0.0
-0 1 0 0.0
+5 0 0 0.0
+0 5 0 0.0
 0 0 1 0.0
 %endblock kgrid_Monkhorst_Pack
 #----------------------------------------------------------------#
 
 #----------------------Band structure ---------------------------#
-BandLinesScale    pi/a
-%block BandLines
-1   0.00       0.00      0.00   \Gamma
-51  0.50       0.00      0.00   M
-51  0.333333   0.333333  0.00   K
-51  0.00       0.00      0.00   \Gamma
-%endblock BandLines
+#BandLinesScale    ReciprocalLatticeVectors
+#%block BandLines
+#1   0.00       0.00      0.00   \Gamma
+#51  0.50       0.00      0.00   M
+#51  0.333333   0.333333  0.00   K
+#51  0.00       0.00      0.00   \Gamma
+#%endblock BandLines
 #----------------------------------------------------------------#
 
 #------------------Control Iteration Parameters------------------#
-MaxSCFIterations              60            
-DM.Tolerance                  1.d-4         
-MD.NumCGsteps                 40           
-MD.MaxForceTol                0.02 ev/Ang          
-
+MaxSCFIterations              100            
+DM.Tolerance                  1.d-5         
 SCFMustConverge               .false.
-DM.Energy.Tolerance           1.d-3 eV
+DM.Energy.Tolerance           1.d-4 eV
 DM.Require.Energy.Convergence   T
-DM.Harris.Tolerance           1.d-4 eV
+DM.Harris.Tolerance           1.d-5 eV
 DM.Require.Harris.Convergence   T
-MD.TargetPressure             0.0 GPa
-MD.MaxStressTol               1.0 GPa
+
+#MD.NumCGsteps                 40           
+#MD.MaxForceTol                0.02 ev/Ang  
+#MD.TargetPressure             0.0 GPa
+#MD.MaxStressTol               1.0 GPa
 #----------------------------------------------------------------#

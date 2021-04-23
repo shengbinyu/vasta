@@ -14,3 +14,10 @@ def listSupercell(super):
         super = int((super) / 2)
         super_ss = np.arange(-1 * super, super)
     return super_ss
+
+def get_twist_angle(index):
+    n = index[0]
+    m = index[1]
+    cstheta = (m**2+n**2+4*m*n)/(m**2+n**2+m*n) * 0.5
+    theta=math.acos(cstheta)*180/math.pi
+    return theta

@@ -1,0 +1,217 @@
+#------------------ General system descriptors --------------#
+SystemName        twist13
+SystemLabel       twist13
+
+NumberOfSpecies   3
+NumberOfAtoms     78
+
+%block ChemicalSpeciesLabel
+	1	42	Mo
+	2	34	Se
+	3	16	S
+%endblock ChemicalSpeciesLabel
+
+LatticeConstant        1.0 Ang
+%block LatticeVectors
+	11.65110	0.000000	0.000000
+	-5.82580	10.09000	0.000000
+	0.000000	0.000000	29.48170
+%endblock LatticeVectors
+
+AtomicCoordinatesFormat  Ang
+
+%block AtomicCoordinatesAndAtomicSpecies
+	-4.03444	9.569890	11.57747	1
+	-1.78759	7.253250	11.57376	1
+	1.349020	8.011460	11.57376	1
+	4.478590	8.798840	11.57747	1
+	0.437510	4.915910	11.57376	1
+	3.588110	5.694840	11.57930	1
+	6.718490	6.465130	11.58097	1
+	-0.44521	1.811890	11.57747	1
+	2.692740	2.586230	11.58097	1
+	5.825430	3.363470	11.57536	1
+	8.962990	4.135230	11.57930	1
+	4.925190	0.260330	11.57930	1
+	8.065060	1.039060	11.58097	1
+	-3.13313	7.503870	17.84319	1
+	-0.90086	9.829720	17.84486	1
+	-2.23740	4.395350	17.84486	1
+	-0.00027	6.726680	17.84880	1
+	2.239180	9.051060	17.84319	1
+	0.893150	3.625130	17.84319	1
+	3.137470	5.954980	17.84486	1
+	5.380230	8.278290	17.84668	1
+	1.791710	0.520470	17.84668	1
+	4.038380	2.837070	17.85040	1
+	6.263300	5.174370	17.85040	1
+	7.175170	2.078930	17.85040	1
+	10.30491	1.291600	17.84668	1
+	-2.24675	9.056870	13.11797	2
+	0.896190	9.820710	13.10092	2
+	-3.12853	5.956430	13.10092	2
+	-0.00057	6.726660	13.11923	2
+	3.140400	7.506680	13.11797	2
+	6.267400	8.277350	13.11205	2
+	-0.89538	3.616440	13.11797	2
+	2.230620	4.402840	13.10092	2
+	5.379290	5.167230	13.12094	2
+	1.348370	1.289430	13.11205	2
+	4.485910	2.075200	13.12094	2
+	7.610420	2.847350	13.12094	2
+	9.859860	0.523000	13.11205	2
+	-4.47750	8.800180	16.31133	2
+	-1.33979	8.014480	16.30243	2
+	-0.44606	4.922550	16.30243	2
+	1.784890	7.242390	16.30243	2
+	4.034150	9.566700	16.31133	2
+	0.442400	1.812530	16.31133	2
+	2.697440	4.133410	16.32245	2
+	4.930410	6.473360	16.30541	2
+	3.579570	1.033080	16.30541	2
+	5.825560	3.363240	16.30415	2
+	8.056570	5.687020	16.32245	2
+	6.722680	0.269290	16.32245	2
+	8.966710	2.583290	16.30541	2
+	-2.24358	9.058940	9.865130	3
+	0.897700	9.829460	9.870970	3
+	-3.13642	5.953470	9.870970	3
+	-0.00039	6.726840	9.856480	3
+	3.140740	7.503330	9.865130	3
+	6.270510	8.276210	9.869820	3
+	-0.89832	3.618250	9.865130	3
+	2.237560	4.397590	9.870970	3
+	5.374460	5.173440	9.866210	3
+	1.348240	1.292800	9.869820	3
+	4.483380	2.068010	9.866210	3
+	7.618350	2.848860	9.866210	3
+	9.857440	0.521300	9.869820	3
+	-4.47776	8.797250	19.55510	3
+	-1.34244	8.022100	19.55872	3
+	-0.45102	4.916770	19.55872	3
+	1.792700	7.241310	19.55872	3
+	4.031610	9.568830	19.55510	3
+	0.445390	1.814100	19.55510	3
+	2.689420	4.136800	19.55395	3
+	4.927340	6.471980	19.55979	3
+	3.582620	1.031440	19.55979	3
+	5.825630	3.363500	19.56845	3
+	8.063390	5.692710	19.55395	3
+	6.724070	0.260980	19.55395	3
+	8.966920	2.587070	19.55979	3
+%endblock AtomicCoordinatesAndAtomicSpecies
+#------------------------------------------------------------#
+
+#-----------------------opt parameters------------------------#
+#Memory 
+#Diag.Memory                2.0    #1.0
+
+#Pseudopotentials
+#Basis setting
+PAO.BasisType            split
+PAO.BasisSize            DZP         #SZ DZ SZP DZP
+PAO.SplitNorm            0.15   
+PAO.EnergyShift          110 meV     #0.02 Ry - [100,200] meV  
+ElectronicTemperatur     300 K 
+
+#Structural Relaxation 
+MD.TypeOfRun             cg
+MD.MaxCGDispl            0.01 Ang   #0.2 Bohr
+MD.VariableCell          T
+MD.PreconditionVariableCell     5.0 Ang
+
+#Self-Consistent loop
+XC.function              GGA   #LDA
+XC.author           	 PBE   #PZ
+SolutionMethod    	 diagon
+OccupationFunction  	 FD
+spinPolarized		 T
+SingleExction            T
+
+
+#standard output
+WriteCoorInitial         T
+WriteCoorStep            T           
+WriteForce               T           
+WriteKpoint              T           
+
+#optical output
+WriteDM                  T
+WriteCoorXmol            T
+#WriteMDhistory                        F            # .false.
+#WriteCoorCerius                      T              # .false.
+#WriteMDXmol                           T              # .false.
+#WriteDM.NetCDF          T             # .ture.
+#SaveHS                  T            # .false.
+#%block ProjectedDensityOfStates
+#-20.00 10.00 0.200 500 eV
+#%endblock ProjectedDensityOfStates
+#%block LocalDensityOfStates
+#-3.50 0.00 eV
+#%endblock LocalDensityOfStates
+#COOP.Write              T           # .false.
+#SaveRho                 T            # .false.
+#SaveDeltaRho            T            # .false.
+#SaveElectrostaticPotential    T      # .false.
+#SaveNeutralAtomPotential      T      # .false.
+#SaveTotalPotential            T      # .false.
+#SaveIonicCharge               T      # .false.
+#SaveTotalCharge               T      # .false.
+#WriteDenchar                  T      # .false.
+
+#NectCDF
+#WriteDM.NetCDF                T
+#WriteDMHS.NetCDF              T
+#Use.New.Diagk                 T
+
+# Restart
+#DM.UseSaveDM                          T              # .false.
+#MD.UseSaveXV                          T              # .false.
+#MD.UseSaveCG                          T              # .false.
+
+#kgrid_cutoff              [6,1,1,1]    # 0.0 Bohr
+#%block GridCellSampling
+#0.5 0.5 0.0
+#0.5 0.0 0.5
+#0.0 0.5 0.5
+#%endblock GridCellSampling
+#FilterCutoff             200 Ry             
+# it should be similar or lower than the meshcuoff to avoid
+# the eggbox effect on the atomic forces.
+#----------------------------------------------------------------#
+
+#------------------ Some Important parameters--------------------#
+DM.MixingWeight             0.04    
+DM.NumberPulay              4    
+MeshCutoff                  600 Ry
+%block kgrid_Monkhorst_Pack
+5 0 0 0.0
+0 5 0 0.0
+0 0 1 0.0
+%endblock kgrid_Monkhorst_Pack
+#----------------------------------------------------------------#
+
+#----------------------Band structure ---------------------------#
+#BandLinesScale    ReciprocalLatticeVectors
+#%block BandLines
+#1   0.00       0.00      0.00   \Gamma
+#51  0.50       0.00      0.00   M
+#51  0.333333   0.333333  0.00   K
+#51  0.00       0.00      0.00   \Gamma
+#%endblock BandLines
+#----------------------------------------------------------------#
+
+#------------------Control Iteration Parameters------------------#
+MaxSCFIterations              100            
+DM.Tolerance                  1.d-5         
+SCFMustConverge               .false.
+DM.Energy.Tolerance           1.d-4 eV
+DM.Require.Energy.Convergence   T
+DM.Harris.Tolerance           1.d-5 eV
+DM.Require.Harris.Convergence   T
+
+#MD.NumCGsteps                 40           
+#MD.MaxForceTol                0.02 ev/Ang  
+#MD.TargetPressure             0.0 GPa
+#MD.MaxStressTol               1.0 GPa
+#----------------------------------------------------------------#

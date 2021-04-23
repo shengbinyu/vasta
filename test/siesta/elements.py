@@ -22,5 +22,3 @@ He=Element('He',2,mass=4.0026,en_name='Helium',chs_name='氦')
 Li=Element('Li',3,mass=6.94,en_name='Lithium',chs_name='锂')
 Be=Element('Be',4,mass=9.0122,en_name='Beryllium',chs_name='铍')
 B=Element('B',5,mass=10.81,en_name='Boron',chs_name='硼')
-
-B.strprint()
