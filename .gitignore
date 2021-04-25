@@ -2,3 +2,4 @@
 /test/twist/__pycache__/
 /test/siesta/__pycache__/
 /test/band/__pycache__/
+*.pyc
