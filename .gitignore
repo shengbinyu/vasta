@@ -1,3 +1,4 @@
 /.idea/*
 /test/twist/__pycache__/
-/test/seista/__pycache__/
+/test/siesta/__pycache__/
+/test/band/__pycache__/
