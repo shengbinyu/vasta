@@ -135,9 +135,10 @@ class System(object):
         elements = self.elements
         totatmos  = self.totatoms
         atom_index = self.atomindex
-        # vec_angle = self.lattice.vecangle[2]
+        # vec_angle = self.lattice.vecangle[0]
         vec_org = self.lattice.cell
         m,n = vec_index
+        symbols = 'twist'+str(m)+str(n)
         T0 = np.zeros(3,dtype='float')
         T1 = m*vec_org[0,:]+n*vec_org[1,:]
         vec1 = vector(array=T1)
@@ -153,8 +154,21 @@ class System(object):
             y_tmp2 = lineEquation(x, T0, T2)
             y_tmp3 = lineEquation(x, T1, Td)
             y_tmp4 = lineEquation(x, T2, Td)
-            if ((y >= y_tmp1) and (y >= y_tmp2) and (y < y_tmp3) and (y < y_tmp4)):
-                atoms_positions = np.append(atoms_positions,positions[ii,:])
+
+            prec = 1e-3
+            comp1eq = fabs(y - y_tmp1) < prec
+            comp2eq = fabs(y - y_tmp2) < prec
+            comp1gq = (y - y_tmp1) > prec
+            comp2gq = (y - y_tmp2) > prec
+            comp3lq = (y_tmp3 - y) > prec
+            comp4lq = (y_tmp4 - y) > prec
+            comp1 = comp1gq or comp1eq
+            comp2 = comp2gq or comp2eq
+            comp3 = comp3lq
+            comp4 = comp4lq
+
+            if (comp1 and comp2 and comp3 and comp4):
+                atoms_positions  =  np.append(atoms_positions,positions[ii,:])
                 atoms_twist_index = np.append(atoms_twist_index,atom_index[ii])
 
         atoms_positions = atoms_positions.reshape(-1,3)
@@ -162,17 +176,18 @@ class System(object):
         numbers = np.zeros(len(elements),dtype='int32')
         for jj in range(len(elements)):
             numbers[jj]=len(atoms_positions[atoms_twist_index == jj])
-        twistlattice = Lattice(symbols=self.symbols,elements=elements,numbers=numbers,cell=twist_cell,positions=atoms_positions)
+        twistlattice = Lattice(symbols=symbols,elements=elements,numbers=numbers,cell=twist_cell,positions=atoms_positions)
         # plot to check
-        # plt.figure()
-        # plt.scatter(0, 0, c='k', marker='*')
-        # plt.scatter(positions[:,0],positions[:,1],c='r')
-        # plt.scatter(atoms_positions[:, 0], atoms_positions[:, 1], c='b')
-        # plt.plot([T1[0],T0[0]],[T1[1],T0[1]],c='k')
-        # plt.plot([T2[0], T0[0]], [T2[1], T0[1]], c='k')
-        # plt.plot([Td[0], T1[0]], [Td[1], T1[1]], c='k')
-        # plt.plot([Td[0], T2[0]], [Td[1], T2[1]], c='k')
-        # plt.axis('equal')
-        # plt.show()
+        plt.figure()
+        plt.scatter(0, 0, c='k', marker='*')
+        plt.scatter(positions[:,0],positions[:,1],c='r')
+        plt.scatter(atoms_positions[:, 0], atoms_positions[:, 1], c='b')
+        plt.plot([T1[0],T0[0]],[T1[1],T0[1]],c='k')
+        plt.plot([T2[0], T0[0]], [T2[1], T0[1]], c='k')
+        plt.plot([Td[0], T1[0]], [Td[1], T1[1]], c='k')
+        plt.plot([Td[0], T2[0]], [Td[1], T2[1]], c='k')
+        plt.axis('equal')
+        plt.show()
+
         self.twistlattice = twistlattice
         return twistlattice

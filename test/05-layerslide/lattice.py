@@ -1,6 +1,7 @@
 import numpy as np
 import copy
 from vector import *
+from utilities import *
 
 class Lattice(object):
     def __init__(self,symbols=None,elements=None,numbers=None,totatoms=None,atomindex=None,cell=None,recipcell=None,positions=None,
@@ -168,9 +169,6 @@ class Lattice(object):
         recipcell[0,:] = b1.transarr()
         recipcell[1,:] = b2.transarr()
         recipcell[2,:] = b3.transarr()
-        #recipcell[0,:] = [b1.x,b1.y,b1.z]
-        #recipcell[1,:] = [b2.x,b2.y,b2.z]
-        #recipcell[2,:] = [b3.x,b3,y,b3.z]
         return  recipcell
 
     def find_position(self,atomslist,indexlist):
@@ -237,6 +235,31 @@ class Lattice(object):
             positions_new[index_set[i],:] = posit_new[i,:]
         return positions_new
 
+    def layer_slide_change(self,atomslist,indexlist,d_fx):
+        cell = self.cell
+        u0= np.array([0,0],dtype='float')
+        ua = cell[0,0:2]
+        ub = cell[1,0:2]
+        ud = ua+ub
+        d_change = d_fx[0]*ua+d_fx[1]*ub
+        scale_positions_new = copy.deepcopy(self.scale_positions)
+        index_set,posit = self.find_position(atomslist,indexlist)
+        listlen = len(atomslist)
+        posit_new = np.zeros((listlen,3),dtype='float')
+        cell_t = np.array(self.cell, dtype='float')
+        cell_t = np.linalg.inv(cell_t)
+        scale_posit_new = np.zeros((listlen, 3), dtype='float')
+        for i in range(listlen):
+            posit_new[i,:] = posit[i,:]
+            posit_new[i, 0:2] = posit[i, 0:2] + d_change
+            scale_posit_new[i, :] = np.dot(posit_new[i, :], cell_t)
+            for j in range(3):
+                scale_posit_new[i,j]=scale_posit_new[i,j]-int(scale_posit_new[i,j])
+            scale_positions_new[index_set[i], :] = scale_posit_new[i, :]
+
+        return scale_positions_new
+
+
     def delete_atoms(self,atomslist,indexlist):
         positions = copy.deepcopy(self.positions)
         elements  = copy.deepcopy(self.elements)
@@ -267,3 +290,4 @@ class Lattice(object):
         print('cell_norm:\n',self.cell_norm())
         print('volume:\n',volume)
         print('vecangle:\n', self.vecangle)
+        print('total number of atom:\n', self.totatoms)

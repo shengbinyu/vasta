@@ -9,4 +9,3 @@ if __name__ == '__main__':
     latt = read_POSCAR('./')
     print(latt.strprint())
     write_kmesh('./',latt,1e-3)
-
